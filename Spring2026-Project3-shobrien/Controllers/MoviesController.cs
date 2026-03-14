@@ -70,26 +70,36 @@ namespace Spring2026_Project3_shobrien.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("MovieID,Title,Genre,ReleaseYear,IMDBLink")] Movie movie, IFormFile Poster)
+        public async Task<IActionResult> Edit(int? id, [Bind("MovieID,Title,Genre,ReleaseYear,IMDBLink")] Movie movie, IFormFile Poster)
         {
+            ModelState.Remove("Poster");
+
+            if (id != movie.MovieID)
+                return NotFound();
+
             if (ModelState.IsValid)
             {
+                var movieToUpdate = await _context.Movies.FindAsync(id);
+
+                if (movieToUpdate == null)
+                    return NotFound();
+
+                movieToUpdate.Title = movie.Title;
+                movieToUpdate.Genre = movie.Genre;
+                movieToUpdate.ReleaseYear = movie.ReleaseYear;
+                movieToUpdate.IMDBLink = movie.IMDBLink;
+
                 if (Poster != null && Poster.Length > 0)
                 {
                     using var memoryStream = new MemoryStream();
                     await Poster.CopyToAsync(memoryStream);
-                    movie.Poster = memoryStream.ToArray();
+                    movieToUpdate.Poster = memoryStream.ToArray();
                 }
-                else
-                {
-                    var currMovie = await _context.Movies.FindAsync(movie.MovieID);
-                    movie.Poster = currMovie.Poster;
-                }
-                _context.Update(movie);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-
             }
+
             return View(movie);
         }
 
