@@ -1,12 +1,12 @@
 ﻿@model List<Spring2026_Project3_shobrien.Models.Movie>
 
 @{
-    ViewData["Title"] = "Movie List";
+    ViewData["Title"] = "All Movies";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<a href="@Url.Action("Create")">Add New Movie</a>
+<a class="btn btn-dark btn-md" href="@Url.Action("Create")">Add New Movie</a>
 
 <table id="moviesTable" class="table" data-table>
     <thead>
