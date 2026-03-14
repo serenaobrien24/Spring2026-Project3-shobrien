@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Spring2026_Project3_shobrien.Data;
 using Spring2026_Project3_shobrien.Models;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -112,6 +113,21 @@ namespace Spring2026_Project3_shobrien.Controllers
             if (movie == null) return NotFound();
 
             return View(movie);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var movie = await _context.Movies.FindAsync(id);
+
+            if (movie != null)
+            {
+                _context.Movies.Remove(movie);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
