@@ -45,5 +45,38 @@ namespace Spring2026_Project3_shobrien.Controllers
             }
             return View(movie);
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+            
+            if (movie == null) return NotFound();
+
+            return View(movie);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+
+            if (movie == null) return NotFound();
+
+            return View(movie);
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+
+            if (movie == null) return NotFound();
+
+            return View(movie);
+        }
     }
 }

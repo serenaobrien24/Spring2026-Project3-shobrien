@@ -1,0 +1,18 @@
+﻿@model Spring2026_Project3_shobrien.Models.Movie
+
+<h1>@Model.Title</h1>
+
+<p><strong>Genre:</strong> @Model.Genre</p>
+<p><strong>Release Year:</strong> @Model.ReleaseYear</p>
+<p><strong>IMDB:</strong> <a href="@Model.IMDBLink" target="_blank">Link</a></p>
+
+@if (Model.Poster != null && Model.Poster.Length > 0)
+{
+    var base64 = Convert.ToBase64String(Model.Poster);
+    var imgSrc = $"data:image/jpeg;base64,{base64}";
+    <img src="@imgSrc" width="300" />
+}
+
+<a class="btn btn-warning" href="@Url.Action("Edit", new { id = Model.MovieID })">Edit</a>
+<a class="btn btn-danger" href="@Url.Action("Delete", new { id = Model.MovieID })">Delete</a>
+<a class="btn btn-secondary" href="@Url.Action("Index")">Back to List</a>
