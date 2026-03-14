@@ -8,7 +8,6 @@
         public string IMDBLink { get; set; }
         public string Genre { get; set; }
         public int ReleaseYear { get; set; }
-        public int MovieID { get; set; }
 
         public byte[] Poster { get; set; }
 
