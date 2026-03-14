@@ -68,6 +68,31 @@ namespace Spring2026_Project3_shobrien.Controllers
             return View(movie);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([Bind("MovieID,Title,Genre,ReleaseYear,IMDBLink")] Movie movie, IFormFile Poster)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Poster != null && Poster.Length > 0)
+                {
+                    using var memoryStream = new MemoryStream();
+                    await Poster.CopyToAsync(memoryStream);
+                    movie.Poster = memoryStream.ToArray();
+                }
+                else
+                {
+                    var currMovie = await _context.Movies.FindAsync(movie.MovieID);
+                    movie.Poster = currMovie.Poster;
+                }
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+            }
+            return View(movie);
+        }
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();

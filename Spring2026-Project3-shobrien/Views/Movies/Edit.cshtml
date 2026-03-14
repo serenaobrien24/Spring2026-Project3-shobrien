@@ -5,4 +5,30 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<h3>Here we will update movie information</h3>
+<h3>Edit movie</h3>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="MovieID"/>
+    <div class="form-group">
+           <label for="Title">Title</label>
+           <input type="text" class="form-control" asp-for="Title"/>
+    </div>
+    <div class="form-group">
+           <label for="Genre">Genre</label>
+           <input type="text" class="form-control" asp-for="Genre"/>
+    </div>
+    <div class="form-group">
+           <label for="ReleaseYear">ReleaseYear</label>
+           <input type="number" class="form-control" asp-for="ReleaseYear"/>
+    </div>
+    <div class="form-group">
+           <label for="IMDBLink">IMDBLink</label>
+           <input type="text" class="form-control" asp-for="IMDBLink"/>
+    </div>
+    <div class="form-group">
+           <label for="Poster">Poster</label>
+           <input type="file" id = "Poster" name="Poster" accept="image/*" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a class="btn btn-secondary" href="@Url.Action("Index")">Cancel</a>
+</form>
