@@ -12,6 +12,6 @@
 
         public byte[] Poster { get; set; }
 
-        public List<MovieActor> Actors { get; set; } = new List<MovieActor>();
+        public List<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
     }
 }
