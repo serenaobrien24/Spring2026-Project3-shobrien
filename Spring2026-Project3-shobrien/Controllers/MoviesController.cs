@@ -19,5 +19,10 @@ namespace Spring2026_Project3_shobrien.Controllers
             var movies = await _context.Movies.ToListAsync();
             return View(movies);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
