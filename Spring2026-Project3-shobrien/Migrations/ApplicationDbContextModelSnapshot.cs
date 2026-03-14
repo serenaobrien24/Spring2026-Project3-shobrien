@@ -8,7 +8,7 @@ using Spring2026_Project3_shobrien.Data;
 
 #nullable disable
 
-namespace Spring2026_Project3_shobrien.Data.Migrations
+namespace Spring2026_Project3_shobrien.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -248,7 +248,6 @@ namespace Spring2026_Project3_shobrien.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Photo")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("ActorID");
@@ -273,7 +272,6 @@ namespace Spring2026_Project3_shobrien.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Poster")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int>("ReleaseYear")

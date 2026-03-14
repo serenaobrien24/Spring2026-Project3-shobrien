@@ -9,7 +9,7 @@
         public string Genre { get; set; }
         public int ReleaseYear { get; set; }
 
-        public byte[] Poster { get; set; }
+        public byte[]? Poster { get; set; }
 
         public List<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
     }

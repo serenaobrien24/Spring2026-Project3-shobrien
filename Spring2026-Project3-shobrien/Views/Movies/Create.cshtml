@@ -1,7 +1,32 @@
 ﻿@model Spring2026_Project3_shobrien.Models.Movie
 
 @{
-    ViewData["Title"] = "Add New Movie";
+    ViewData["Title"] = "Add Movie";
 }
 <h1>@ViewData["Title"]</h1>
 
+<h3>Create an item</h3>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+           <label for="Title">Title</label>
+           <input type="text" class="form-control" asp-for="Title"/>
+    </div>
+    <div class="form-group">
+           <label for="Genre">Genre</label>
+           <input type="text" class="form-control" asp-for="Genre"/>
+    </div>
+    <div class="form-group">
+           <label for="ReleaseYear">ReleaseYear</label>
+           <input type="number" class="form-control" asp-for="ReleaseYear"/>
+    </div>
+    <div class="form-group">
+           <label for="IMDBLink">IMDBLink</label>
+           <input type="text" class="form-control" asp-for="IMDBLink"/>
+    </div>
+    <div class="form-group">
+           <label for="Poster">Poster</label>
+           <input type="file" id = "Poster" name="Poster" accept="image/*" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Movie</button>
+</form>

@@ -1,8 +1,12 @@
-﻿@model IEnumerable<Spring2026_Project3_shobrien.Models.Movie>
+﻿@model List<Spring2026_Project3_shobrien.Models.Movie>
 
 @{
-    ViewData["Title"] = "Movie Display Page";
+    ViewData["Title"] = "Movie List";
 }
+
+<h1>@ViewData["Title"]</h1>
+
+<a href="@Url.Action("Create")">Add New Movie</a>
 
 <table id="moviesTable" class="display">
     <thead>
@@ -12,7 +16,6 @@
             <th>Release Year</th>
             <th>IMDB</th>
             <th>Poster</th>
-            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -31,14 +34,7 @@
                         <img src="@imgSrc" width="100" />
                     }
                 </td>
-                <td>
-                    <a href="@Url.Action("Details", new { id = movie.MovieID })">Details</a> |
-                    <a href="@Url.Action("Edit", new { id = movie.MovieID })">Edit</a> |
-                    <a href="@Url.Action("Delete", new { id = movie.MovieID })">Delete</a>
-                </td>
             </tr>
         }
     </tbody>
 </table>
-
-

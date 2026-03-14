@@ -9,10 +9,10 @@ using Spring2026_Project3_shobrien.Data;
 
 #nullable disable
 
-namespace Spring2026_Project3_shobrien.Data.Migrations
+namespace Spring2026_Project3_shobrien.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260314151944_InitialCreate")]
+    [Migration("20260314164736_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
