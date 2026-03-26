@@ -143,53 +143,53 @@ namespace Spring2026_Project3_shobrien.Controllers
         {
             if (id == null) return NotFound();
 
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+            var actor = await _context.Actors.FirstOrDefaultAsync(m => m.ActorID == id);
 
-            if (movie == null) return NotFound();
+            if (actor == null) return NotFound();
 
-            return View(movie);
+            return View(actor);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("MovieID,Title,Genre,ReleaseYear,IMDBLink")] Movie movie, IFormFile Poster)
+        public async Task<IActionResult> Edit(int? id, [Bind("ActorID,Name,Gender,Age,IMDBLink")] Actor actor, IFormFile Photo)
         {
-            ModelState.Remove("Poster");
+            ModelState.Remove("Photo");
 
-            if (id != movie.MovieID)
+            if (id != actor.ActorID)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
-                var movieToUpdate = await _context.Movies.FindAsync(id);
+                var actorToUpdate = await _context.Actors.FindAsync(id);
 
-                if (movieToUpdate == null)
+                if (actorToUpdate == null)
                     return NotFound();
 
-                movieToUpdate.Title = movie.Title;
-                movieToUpdate.Genre = movie.Genre;
-                movieToUpdate.ReleaseYear = movie.ReleaseYear;
-                movieToUpdate.IMDBLink = movie.IMDBLink;
+                actorToUpdate.Name = actor.Name;
+                actorToUpdate.Gender = actor.Gender;
+                actorToUpdate.Age = actor.Age;
+                actorToUpdate.IMDBLink = actor.IMDBLink;
 
-                if (Poster != null && Poster.Length > 0)
+                if (Photo != null && Photo.Length > 0)
                 {
                     using var memoryStream = new MemoryStream();
-                    await Poster.CopyToAsync(memoryStream);
-                    movieToUpdate.Poster = memoryStream.ToArray();
+                    await Photo.CopyToAsync(memoryStream);
+                    actorToUpdate.Photo = memoryStream.ToArray();
                 }
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(movie);
+            return View(actor);
         }
 
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
 
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+            var movie = await _context.Actors.FirstOrDefaultAsync(m => m.ActorID == id);
 
             if (movie == null) return NotFound();
 
@@ -200,11 +200,11 @@ namespace Spring2026_Project3_shobrien.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var actor = await _context.Actors.FindAsync(id);
 
-            if (movie != null)
+            if (actor != null)
             {
-                _context.Movies.Remove(movie);
+                _context.Actors.Remove(actor);
                 await _context.SaveChangesAsync();
             }
 
