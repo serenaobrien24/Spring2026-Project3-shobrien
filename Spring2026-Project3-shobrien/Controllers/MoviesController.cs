@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Azure.AI.OpenAI;
 using OpenAI.Chat;
 using System.ClientModel;
+using System.Text.Json;
 using VaderSharp2;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic;
@@ -65,33 +66,25 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             if (movie == null) return NotFound();
 
-            var endpoint = _configuration["gpt-4.1-mini:API_Endpoint"];
-            var apiKey = _configuration["gpt-4.1-mini:API_Key"];
+            string json = @"{
+                ""reviews"": [
+                    ""A thrilling masterpiece that keeps you on the edge of your seat!"",
+                    ""An emotional rollercoaster with stunning visuals."",
+                    ""A bit slow at times, but the performances are top-notch."",
+                    ""An unforgettable cinematic experience that resonates long after the credits roll."",
+                    ""A well-crafted story with a few pacing issues, but overall enjoyable.""
+                ]
+            }";
 
-            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(endpoint))
-            {
-                throw new Exception("API config not loading correctly");
-            }
+            //var endpoint = _configuration["gpt-4.1-mini:API_Endpoint"];
+            //var apiKey = _configuration["gpt-4.1-mini:API_Key"];
 
-            ChatClient client = new AzureOpenAIClient(new Uri(endpoint), new ApiKeyCredential(apiKey)).GetChatClient("gpt-4.1-mini");
+            //if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(endpoint))
+            //{
+            //    throw new Exception("API config not loading correctly");
+            //}
 
-            var testMessages = new ChatMessage[]
-            {
-                new UserChatMessage("Say hello in one sentence.")
-            };
-
-            var testResult = await client.CompleteChatAsync(testMessages);
-
-            var testOutput = testResult.Value.Content[0].Text;
-
-            ViewBag.Test = testOutput;
-            return View(movie);
-
-            //var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
-
-            //if (movie == null) return NotFound();
-
-            //ChatClient client = new AzureOpenAIClient(APIEndpoint, APICredential).GetChatClient("azureml://registries/azure-openai/models/gpt-4.1-mini/versions/2025-04-14");
+            //ChatClient client = new AzureOpenAIClient(new Uri(endpoint), new ApiKeyCredential(apiKey)).GetChatClient("gpt-4.1-mini");
 
             //var messages = new ChatMessage[]
             //{
@@ -108,9 +101,29 @@ namespace Spring2026_Project3_shobrien.Controllers
             //        ""Review 5""
             //      ]
             //    }}
-            //    Do not include extra text, explanations, or formatting outside this JSON. Each review should be unique and reflect a realistic audience perspective.
+            //    Do not include extra text outside the JSON.
             //    ")
             //};
+
+            //var result = await client.CompleteChatAsync(messages);
+
+            //string json = result.Value.Content.FirstOrDefault()?.Text ?? "{\"reviews\":[]}";
+
+            var reviews = JsonSerializer.Deserialize<MovieReviewResponse>(json);
+
+            var viewModel = new MovieDetailsViewModel
+            {
+                Movie = movie,
+                Reviews = reviews?.Reviews ?? new List<string>()
+            }; 
+
+            return View(viewModel);
+
+            //var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+
+            //if (movie == null) return NotFound();
+
+            //ChatClient client = new AzureOpenAIClient(APIEndpoint, APICredential).GetChatClient("azureml://registries/azure-openai/models/gpt-4.1-mini/versions/2025-04-14");
 
             //ClientResult<ChatCompletion> result = await client.CompleteChatAsync(messages);
 
