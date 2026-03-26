@@ -1,0 +1,46 @@
+﻿@model List<Spring2026_Project3_shobrien.Models.Actor>
+
+@{
+    ViewData["Title"] = "All Actors";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a class="btn btn-dark btn-md" href="@Url.Action("Create")">Add New Actor</a>
+
+<table id="moviesTable" class="table" data-table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>IMDB</th>
+            <th>Photo</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model)
+        {
+            <tr>
+                <td>@actor.Name</td>
+                <td>@actor.Gender</td>
+                <td>@actor.Age</td>
+                <td><a href="@actor.IMDBLink" target="_blank">IMDB</a></td>
+                <td>
+                    @if (actor.Photo != null && actor.Photo.Length > 0)
+                    {
+                        var base64 = Convert.ToBase64String(actor.Photo);
+                        var imgSrc = $"data:image/jpeg;base64,{base64}";
+                        <img src="@imgSrc" width="100" />
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-info btn-sm" href="@Url.Action("Details", new { id = actor.ActorID })">Details</a>
+                    <a class="btn btn-warning btn-sm" href="@Url.Action("Edit", new { id = actor.ActorID })">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="@Url.Action("Delete", new { id = actor.ActorID })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

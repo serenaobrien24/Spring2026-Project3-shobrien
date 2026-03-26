@@ -1,0 +1,32 @@
+﻿@model Spring2026_Project3_shobrien.Models.Actor
+
+@{
+    ViewData["Title"] = "Add Actor";
+}
+<h1>@ViewData["Title"]</h1>
+
+<h3>Create an item</h3>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+           <label for="Name">Name</label>
+        <input type="text" class="form-control" asp-for="Name" />
+    </div>
+    <div class="form-group">
+        <label for="Gender">Gender</label>
+           <input type="text" class="form-control" asp-for="Gender"/>
+    </div>
+    <div class="form-group">
+        <label for="Age">Age</label>
+        <input type="number" class="form-control" asp-for="Age" />
+    </div>
+    <div class="form-group">
+           <label for="IMDBLink">IMDBLink</label>
+           <input type="text" class="form-control" asp-for="IMDBLink"/>
+    </div>
+    <div class="form-group">
+           <label for="Photo">Photo</label>
+           <input type="file" id = "Photo" name="Photo" accept="image/*" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Movie</button>
+</form>
