@@ -115,7 +115,16 @@ namespace Spring2026_Project3_shobrien.Controllers
             {
                 Movie = movie,
                 Reviews = reviews?.Reviews ?? new List<string>()
-            }; 
+            };
+
+            var analyzer = new SentimentIntensityAnalyzer();
+            foreach (var review in viewModel.Reviews)
+            {
+                var score = analyzer.PolarityScores(review).Compound;
+                viewModel.Sentiments.Add(score);
+            }
+
+            viewModel.AverageSentiment = viewModel.Sentiments.Count > 0 ? viewModel.Sentiments.Average() : 0;
 
             return View(viewModel);
 

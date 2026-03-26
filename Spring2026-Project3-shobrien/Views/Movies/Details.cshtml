@@ -19,12 +19,14 @@
 <a class="btn btn-secondary" href="@Url.Action("Index")">Back to List</a>
 
 <h3>Reviews</h3>
+<h4>Average Sentiment: @Model.AverageSentiment.ToString("F2")</h4>
 
 <table id="reviewsTable" class="table" data-table>
     <thead>
         <tr>
             <th>#</th>
             <th>Review</th>
+            <th>Sentiment</th>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +35,7 @@
             <tr>
                 <td>@(i+1)</td>
                 <td>@Model.Reviews[i]</td>
+                <td>@Model.Sentiments[i].ToString("F2")</td>
             </tr>
         }
     </tbody>
