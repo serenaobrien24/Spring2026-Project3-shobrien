@@ -62,18 +62,23 @@ namespace Spring2026_Project3_shobrien.Controllers
         {
             if (id == null) return NotFound();
 
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+            var actor = await _context.Actors.FirstOrDefaultAsync(m => m.ActorID == id);
 
-            if (movie == null) return NotFound();
+            if (actor == null) return NotFound();
 
             string json = @"{
-                ""reviews"": [
-                    ""A thrilling masterpiece that keeps you on the edge of your seat!"",
-                    ""An emotional rollercoaster with stunning visuals."",
-                    ""A bit slow at times, but the performances are top-notch."",
-                    ""An unforgettable cinematic experience that resonates long after the credits roll."",
-                    ""A well-crafted story with a few pacing issues, but overall enjoyable.""
-                ]
+              ""tweets"": [
+                ""Just watched Pedro Pascal in his latest series—he absolutely steals every scene!"",
+                ""Pedro Pascal’s charm and talent never fail to impress. Truly one of a kind."",
+                ""I feel like Pedro Pascal could play any role and make it iconic."",
+                ""Can we talk about Pedro Pascal’s wardrobe choices in the new show? Chef’s kiss!"",
+                ""Every time Pedro Pascal smiles on screen, my day gets better."",
+                ""Pedro Pascal deserves every award coming his way. What a performer!"",
+                ""The intensity Pedro Pascal brings to his roles is unmatched."",
+                ""I could watch Pedro Pascal deliver monologues all day, honestly."",
+                ""Pedro Pascal + action scenes = pure perfection. Never disappoints!"",
+                ""Why is Pedro Pascal so effortlessly cool in every role he takes on?""
+              ]
             }";
 
             //var endpoint = _configuration["gpt-4.1-mini:API_Endpoint"];
@@ -88,17 +93,22 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             //var messages = new ChatMessage[]
             //{
-            //    new SystemChatMessage("You will output exactly 5 short reviews in valid JSON format, nothing else."),
+            //    new SystemChatMessage("You will output exactly 10 short simulated tweets in valid JSON format, nothing else."),
             //    new UserChatMessage($@"
-            //    Generate exactly five short movie reviews (2-3 sentences each) for the movie '{movie.Title}' released in {movie.ReleaseYear}. 
+            //    Generate exactly ten tweets about actor '{actor.Name}'. 
             //    Return the output in valid JSON with this structure:
             //    {{
-            //      ""reviews"": [
-            //        ""Review 1"",
-            //        ""Review 2"",
-            //        ""Review 3"",
-            //        ""Review 4"",
-            //        ""Review 5""
+            //      ""tweets"": [
+            //        ""Tweet 1"",
+            //        ""Tweet 2"",
+            //        ""Tweet 3"",
+            //        ""Tweet 4"",
+            //        ""Tweet 5"",
+            //        ""Tweet 6"",
+            //        ""Tweet 7"",
+            //        ""Tweet 8"",
+            //        ""Tweet 9"",
+            //        ""Tweet 10"",
             //      ]
             //    }}
             //    Do not include extra text outside the JSON.
@@ -107,18 +117,18 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             //var result = await client.CompleteChatAsync(messages);
 
-            //string json = result.Value.Content.FirstOrDefault()?.Text ?? "{\"reviews\":[]}";
+            //string json = result.Value.Content.FirstOrDefault()?.Text ?? "{\"tweets\":[]}";
 
-            var reviews = JsonSerializer.Deserialize<MovieReviewResponse>(json);
+            var tweets = JsonSerializer.Deserialize<ActorTweetResponse>(json);
 
-            var viewModel = new MovieDetailsViewModel
+            var viewModel = new ActorDetailsViewModel
             {
-                Movie = movie,
-                Reviews = reviews?.Reviews ?? new List<string>()
+                Actor = actor,
+                Tweets = tweets?.Tweets ?? new List<string>()
             };
 
             var analyzer = new SentimentIntensityAnalyzer();
-            foreach (var review in viewModel.Reviews)
+            foreach (var review in viewModel.Tweets)
             {
                 var score = analyzer.PolarityScores(review).Compound;
                 viewModel.Sentiments.Add(score);
