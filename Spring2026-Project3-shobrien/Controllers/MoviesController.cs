@@ -20,15 +20,11 @@ namespace Spring2026_Project3_shobrien.Controllers
 
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
-        private readonly Uri APIEndpoint;
-        private readonly ApiKeyCredential APICredential;
 
         public MoviesController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-            APIEndpoint = new Uri(_configuration["gpt-4.1-mini: API_Endpoint"]);
-            APICredential = new ApiKeyCredential(_configuration["gpt-4.1-mini: API_Key"]);
         }
         public async Task<IActionResult> Index()
         {
@@ -65,34 +61,36 @@ namespace Spring2026_Project3_shobrien.Controllers
         {
             if (id == null) return NotFound();
 
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+            return NotFound();
 
-            if (movie == null) return NotFound();
+            //var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
 
-            ChatClient client = new AzureOpenAIClient(APIEndpoint, APICredential).GetChatClient("azureml://registries/azure-openai/models/gpt-4.1-mini/versions/2025-04-14");
+            //if (movie == null) return NotFound();
 
-            var messages = new ChatMessage[]
-            {
-                new SystemChatMessage("You will output exactly 5 short reviews in valid JSON format, nothing else."),
-                new UserChatMessage($@"
-                Generate exactly five short movie reviews (2-3 sentences each) for the movie '{movie.Title}' released in {movie.ReleaseYear}. 
-                Return the output in valid JSON with this structure:
-                {{
-                  ""reviews"": [
-                    ""Review 1"",
-                    ""Review 2"",
-                    ""Review 3"",
-                    ""Review 4"",
-                    ""Review 5""
-                  ]
-                }}
-                Do not include extra text, explanations, or formatting outside this JSON. Each review should be unique and reflect a realistic audience perspective.
-                ")
-            };
+            //ChatClient client = new AzureOpenAIClient(APIEndpoint, APICredential).GetChatClient("azureml://registries/azure-openai/models/gpt-4.1-mini/versions/2025-04-14");
 
-            ClientResult<ChatCompletion> result = await client.CompleteChatAsync(messages);
+            //var messages = new ChatMessage[]
+            //{
+            //    new SystemChatMessage("You will output exactly 5 short reviews in valid JSON format, nothing else."),
+            //    new UserChatMessage($@"
+            //    Generate exactly five short movie reviews (2-3 sentences each) for the movie '{movie.Title}' released in {movie.ReleaseYear}. 
+            //    Return the output in valid JSON with this structure:
+            //    {{
+            //      ""reviews"": [
+            //        ""Review 1"",
+            //        ""Review 2"",
+            //        ""Review 3"",
+            //        ""Review 4"",
+            //        ""Review 5""
+            //      ]
+            //    }}
+            //    Do not include extra text, explanations, or formatting outside this JSON. Each review should be unique and reflect a realistic audience perspective.
+            //    ")
+            //};
 
-            return View(movie);
+            //ClientResult<ChatCompletion> result = await client.CompleteChatAsync(messages);
+
+             //return View(movie);
         }
 
         public async Task<IActionResult> Edit(int? id)
