@@ -61,7 +61,31 @@ namespace Spring2026_Project3_shobrien.Controllers
         {
             if (id == null) return NotFound();
 
-            return NotFound();
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
+
+            if (movie == null) return NotFound();
+
+            var endpoint = _configuration["gpt-4.1-mini:API_Endpoint"];
+            var apiKey = _configuration["gpt-4.1-mini:API_Key"];
+
+            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(endpoint))
+            {
+                throw new Exception("API config not loading correctly");
+            }
+
+            ChatClient client = new AzureOpenAIClient(new Uri(endpoint), new ApiKeyCredential(apiKey)).GetChatClient("gpt-4.1-mini");
+
+            var testMessages = new ChatMessage[]
+            {
+                new UserChatMessage("Say hello in one sentence.")
+            };
+
+            var testResult = await client.CompleteChatAsync(testMessages);
+
+            var testOutput = testResult.Value.Content[0].Text;
+
+            ViewBag.Test = testOutput;
+            return View(movie);
 
             //var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
 
@@ -90,7 +114,7 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             //ClientResult<ChatCompletion> result = await client.CompleteChatAsync(messages);
 
-             //return View(movie);
+            //return View(movie);
         }
 
         public async Task<IActionResult> Edit(int? id)
