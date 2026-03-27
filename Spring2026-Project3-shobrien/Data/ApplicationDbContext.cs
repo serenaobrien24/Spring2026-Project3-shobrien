@@ -21,6 +21,20 @@ namespace Spring2026_Project3_shobrien.Data
 
             modelBuilder.Entity<MovieActor>()
                 .HasKey(ma => new { ma.MovieID, ma.ActorID });
+
+            // cascade delete relationships involving a deleted movie
+            modelBuilder.Entity<MovieActor>()
+                .HasOne(ma => ma.Movie)
+                .WithMany(m => m.MovieActors)
+                .HasForeignKey(ma => ma.MovieID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // cascade delete relationships involving a deleted actor
+            modelBuilder.Entity<MovieActor>()
+                .HasOne(ma => ma.Actor)
+                .WithMany(a => a.MovieActors)
+                .HasForeignKey(ma => ma.ActorID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

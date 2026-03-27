@@ -44,6 +44,18 @@ namespace Spring2026_Project3_shobrien.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var exists = await _context.MovieActors.AnyAsync(ma => ma.MovieID == model.MovieID && ma.ActorID == model.ActorID);
+
+                if (exists)
+                {
+                    ModelState.AddModelError("", "This movie-actor relationship already exists.");
+
+                    ViewBag.Actors = _context.Actors.ToList();
+                    ViewBag.Movies = _context.Movies.ToList();
+                    return View(model);
+                }
+
                 var link = new MovieActor
                 {
                     ActorID = model.ActorID,
