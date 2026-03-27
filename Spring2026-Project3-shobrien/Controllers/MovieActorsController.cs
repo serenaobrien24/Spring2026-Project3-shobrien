@@ -57,5 +57,94 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> Edit(int movieID, int actorID)
+        {
+            var link = await _context.MovieActors
+                .Include(ma => ma.Actor)
+                .Include(ma => ma.Movie)
+                .FirstOrDefaultAsync(ma => ma.MovieID == movieID && ma.ActorID == actorID);
+
+            if (link == null) return NotFound();
+
+            ViewBag.Actors = _context.Actors.ToList();
+            ViewBag.Movies = _context.Movies.ToList();
+
+            var vm = new MovieActorViewModel
+            {
+                ActorID = link.ActorID,
+                MovieID = link.MovieID,
+                ActorName = link.Actor.Name,
+                MovieTitle = link.Movie.Title
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(MovieActorViewModel model, int oldMovieID, int oldActorID)
+        {
+            var link = await _context.MovieActors
+                .FirstOrDefaultAsync(ma => ma.MovieID == oldMovieID && ma.ActorID == oldActorID);
+
+            if (link == null) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                _context.MovieActors.Remove(link);
+
+                var newLink = new MovieActor
+                {
+                    MovieID = model.MovieID,
+                    ActorID = model.ActorID
+                };
+                _context.MovieActors.Add(newLink);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+            }
+
+            ViewBag.Actors = _context.Actors.ToList();
+            ViewBag.Movies = _context.Movies.ToList();
+            return View(model);
+        }
+
+        public async Task<IActionResult> Delete(int movieID, int actorID)
+        {
+            var link = await _context.MovieActors
+                .Include(ma => ma.Actor)
+                .Include(ma => ma.Movie)
+                .FirstOrDefaultAsync(ma => ma.MovieID == movieID && ma.ActorID == actorID);
+
+            if (link == null) return NotFound();
+
+            var vm = new MovieActorViewModel
+            {
+                ActorID = link.ActorID,
+                MovieID = link.MovieID,
+                ActorName = link.Actor.Name,
+                MovieTitle = link.Movie.Title
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int movieID, int actorID)
+        {
+            var link = await _context.MovieActors
+                .FirstOrDefaultAsync(ma => ma.MovieID == movieID && ma.ActorID == actorID);
+
+            if (link != null)
+            {
+                _context.MovieActors.Remove(link);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

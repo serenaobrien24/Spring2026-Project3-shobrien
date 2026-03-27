@@ -1,34 +1,34 @@
-﻿@model Spring2026_Project3_shobrien.Models.Actor
+﻿@model Spring2026_Project3_shobrien.Models.MovieActorViewModel
 
 @{
-    ViewData["Title"] = "Edit Actor";
+    ViewData["Title"] = "Edit Relationship";
 }
 <h1>@ViewData["Title"]</h1>
 
-<h3>Edit actor</h3>
+<h3>Edit movie-actor relationship</h3>
 
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="ActorID"/>
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="oldMovieId" value="@Model.MovieID" />
+    <input type="hidden" name="oldActorId" value="@Model.ActorID" />
+
     <div class="form-group">
-           <label for="Name">Name</label>
-           <input type="text" class="form-control" asp-for="Name"/>
+        <label>Actor</label>
+        <select asp-for="ActorID" class="form-control"
+                asp-items="@(new SelectList(ViewBag.Actors, "ActorID", "Name", Model.ActorID))">
+            <option value="">-- Select Actor --</option>
+        </select>
     </div>
+
     <div class="form-group">
-           <label for="Gender">Gender</label>
-           <input type="text" class="form-control" asp-for="Gender"/>
+        <label>Movie</label>
+        <select asp-for="MovieID" class="form-control"
+                asp-items="@(new SelectList(ViewBag.Movies, "MovieID", "Title", Model.MovieID))">
+            <option value="">-- Select Movie --</option>
+        </select>
     </div>
-    <div class="form-group">
-           <label for="Age">Age</label>
-           <input type="number" class="form-control" asp-for="Age"/>
-    </div>
-    <div class="form-group">
-           <label for="IMDBLink">IMDBLink</label>
-           <input type="text" class="form-control" asp-for="IMDBLink"/>
-    </div>
-    <div class="form-group">
-           <label for="Photo">Photo</label>
-           <input type="file" id = "Poster" name="Poster" accept="image/*" class="form-control"/>
-    </div>
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+
+    <button type="submit" class="btn btn-primary mt-2">Save Changes</button>
     <a class="btn btn-secondary" href="@Url.Action("Index")">Cancel</a>
 </form>
+
+
