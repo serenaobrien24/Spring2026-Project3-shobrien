@@ -111,10 +111,17 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             var reviews = JsonSerializer.Deserialize<MovieReviewResponse>(json);
 
+            var actors = await _context.MovieActors
+                .Where(ma => ma.MovieID == movie.MovieID)
+                .Include(ma => ma.Actor)
+                .Select(ma => ma.Actor)
+                .ToListAsync();
+
             var viewModel = new MovieDetailsViewModel
             {
                 Movie = movie,
-                Reviews = reviews?.Reviews ?? new List<string>()
+                Reviews = reviews?.Reviews ?? new List<string>(),
+                Actors = actors
             };
 
             var analyzer = new SentimentIntensityAnalyzer();

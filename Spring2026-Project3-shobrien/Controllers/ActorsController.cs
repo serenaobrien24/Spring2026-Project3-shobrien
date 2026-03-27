@@ -121,10 +121,17 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             var tweets = JsonSerializer.Deserialize<ActorTweetResponse>(json);
 
+            var movies = await _context.MovieActors
+                .Where(ma => ma.ActorID == actor.ActorID)
+                .Include(ma => ma.Movie)
+                .Select(ma => ma.Movie)
+                .ToListAsync();
+
             var viewModel = new ActorDetailsViewModel
             {
                 Actor = actor,
-                Tweets = tweets?.Tweets ?? new List<string>()
+                Tweets = tweets?.Tweets ?? new List<string>(),
+                Movies = movies
             };
 
             var analyzer = new SentimentIntensityAnalyzer();
@@ -137,16 +144,6 @@ namespace Spring2026_Project3_shobrien.Controllers
             viewModel.AverageSentiment = viewModel.Sentiments.Count > 0 ? viewModel.Sentiments.Average() : 0;
 
             return View(viewModel);
-
-            //var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
-
-            //if (movie == null) return NotFound();
-
-            //ChatClient client = new AzureOpenAIClient(APIEndpoint, APICredential).GetChatClient("azureml://registries/azure-openai/models/gpt-4.1-mini/versions/2025-04-14");
-
-            //ClientResult<ChatCompletion> result = await client.CompleteChatAsync(messages);
-
-            //return View(movie);
         }
 
         public async Task<IActionResult> Edit(int? id)

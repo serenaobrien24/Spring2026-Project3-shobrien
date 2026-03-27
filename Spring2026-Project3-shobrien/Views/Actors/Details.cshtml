@@ -41,3 +41,41 @@
     </tbody>
 
 </table>
+
+<h3>Movies with this actor:</h3>
+<table id="moviesTable" class="table" data-table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Release Year</th>
+            <th>IMDB</th>
+            <th>Poster</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model.Movies)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.Genre</td>
+                <td>@movie.ReleaseYear</td>
+                <td><a href="@movie.IMDBLink" target="_blank">IMDB</a></td>
+                <td>
+                    @if (movie.Poster != null && movie.Poster.Length > 0)
+                    {
+                        var base64 = Convert.ToBase64String(movie.Poster);
+                        var imgSrc = $"data:image/jpeg;base64,{base64}";
+                        <img src="@imgSrc" width="100" />
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-info btn-sm" href="@Url.Action("Details", new { id = movie.MovieID })">Details</a>
+                    <a class="btn btn-warning btn-sm" href="@Url.Action("Edit", new { id = movie.MovieID })">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="@Url.Action("Delete", new { id = movie.MovieID })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
