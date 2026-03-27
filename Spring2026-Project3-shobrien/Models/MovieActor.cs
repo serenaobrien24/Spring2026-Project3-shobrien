@@ -5,7 +5,7 @@
         public int MovieID { get; set; }
         public int ActorID { get; set; }
 
-        public Actor Actor { get; set; }
-        public Movie Movie { get; set; }
+        public Actor Actor { get; set; } = null!;
+        public Movie Movie { get; set; } = null!;
     }
 }

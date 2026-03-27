@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Spring2026_Project3_shobrien.Models.MovieActorViewModel>
+
+@{
+    ViewData["Title"] = "All Movie-Actor Relationships";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a class="btn btn-dark btn-md" href="@Url.Action("Create")">Add New Relationship</a>
+
+<table id="movieActorsTable" class="table" data-table>
+    <thead>
+        <tr>
+            <th>Actor</th>
+            <th>Movie</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var link in Model)
+        {
+            <tr>
+                <td>@link.ActorName</td>
+                <td>@link.MovieTitle</td>
+                
+                <td>
+                    <a class="btn btn-info btn-sm" href="@Url.Action("Details", new { movieID = link.MovieID, actorID = link.ActorID })">Details</a>
+                    <a class="btn btn-warning btn-sm" href="@Url.Action("Edit", new { movieID = link.MovieID, actorID = link.ActorID })">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="@Url.Action("Delete", new { movieID = link.MovieID, actorID = link.ActorID })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
