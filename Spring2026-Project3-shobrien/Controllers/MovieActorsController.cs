@@ -29,5 +29,33 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             return View(links);
         }
+
+        public IActionResult Create()
+        {
+            ViewBag.Actors = _context.Actors.ToList();
+            ViewBag.Movies = _context.Movies.ToList();
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(MovieActorViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var link = new MovieActor
+                {
+                    ActorID = model.ActorID,
+                    MovieID = model.MovieID
+                };
+
+                _context.Add(link);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+        }
     }
 }

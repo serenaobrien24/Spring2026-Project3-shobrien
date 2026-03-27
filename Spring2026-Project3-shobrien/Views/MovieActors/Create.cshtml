@@ -1,32 +1,24 @@
-﻿@model Spring2026_Project3_shobrien.Models.Actor
+﻿@model Spring2026_Project3_shobrien.Models.MovieActorViewModel
 
 @{
-    ViewData["Title"] = "Add Actor";
+    ViewData["Title"] = "Add Movie-Actor Relationship";
 }
 <h1>@ViewData["Title"]</h1>
 
 <h3>Create an item</h3>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form asp-action="Create" method="post">
     <div class="form-group">
-           <label for="Name">Name</label>
-        <input type="text" class="form-control" asp-for="Name" />
+        <label>Actor</label>
+        <select asp-for="ActorID" class="form-control" asp-items="@(new SelectList(ViewBag.Actors, "ActorID", "Name"))">
+			<option value="">-- Select Actor --</option>
+        </select>
     </div>
     <div class="form-group">
-        <label for="Gender">Gender</label>
-           <input type="text" class="form-control" asp-for="Gender"/>
+        <label>Movie</label>
+        <select asp-for="ActorID" class="form-control" asp-items="@(new SelectList(ViewBag.Movies, "MovieID", "Title"))">
+            <option value="">-- Select Movie --</option>
+        </select>
     </div>
-    <div class="form-group">
-        <label for="Age">Age</label>
-        <input type="number" class="form-control" asp-for="Age" />
-    </div>
-    <div class="form-group">
-           <label for="IMDBLink">IMDBLink</label>
-           <input type="text" class="form-control" asp-for="IMDBLink"/>
-    </div>
-    <div class="form-group">
-           <label for="Photo">Photo</label>
-           <input type="file" id = "Photo" name="Photo" accept="image/*" class="form-control"/>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Actor</button>
+    <button type="submit" class="btn btn-primary">Add Relationship</button>
 </form>
