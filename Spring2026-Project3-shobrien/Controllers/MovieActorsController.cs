@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Spring2026_Project3_shobrien.Data;
 using Spring2026_Project3_shobrien.Models;
+using VaderSharp2;
 
 namespace Spring2026_Project3_shobrien.Controllers
 {
@@ -68,6 +70,24 @@ namespace Spring2026_Project3_shobrien.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Details(int movieID, int actorID)
+        {
+            var link = await _context.MovieActors
+                .Include(ma => ma.Actor)
+                .Include(ma => ma.Movie)
+                .FirstOrDefaultAsync(ma => ma.MovieID == movieID && ma.ActorID == actorID);
+
+            if (link == null) return NotFound();
+
+            var viewModel = new MovieActorDetailsViewModel
+            {
+                movie = link.Movie,
+                actor = link.Actor,
+            };
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Edit(int movieID, int actorID)

@@ -1,43 +1,36 @@
-﻿@model Spring2026_Project3_shobrien.Models.ActorDetailsViewModel
+﻿@model Spring2026_Project3_shobrien.Models.MovieActorDetailsViewModel
 
+<h1>@Model.actor.Name</h1>
 
-<h1>@Model.Actor.Name</h1>
+<p><strong>Gender:</strong> @Model.actor.Gender</p>
+<p><strong>Age:</strong> @Model.actor.Age</p>
+<p><strong>IMDB:</strong> <a href="@Model.actor.IMDBLink" target="_blank">Link</a></p>
 
-<p><strong>Gender:</strong> @Model.Actor.Gender</p>
-<p><strong>Age:</strong> @Model.Actor.Age</p>
-<p><strong>IMDB:</strong> <a href="@Model.Actor.IMDBLink" target="_blank">Link</a></p>
-
-@if (Model.Actor.Photo != null && Model.Actor.Photo.Length > 0)
+@if (Model.actor.Photo != null && Model.actor.Photo.Length > 0)
 {
-    var base64 = Convert.ToBase64String(Model.Actor.Photo);
+    var base64 = Convert.ToBase64String(Model.actor.Photo);
     var imgSrc = $"data:image/jpeg;base64,{base64}";
     <img src="@imgSrc" width="300" />
 }
 
-<a class="btn btn-warning" href="@Url.Action("Edit", new { id = Model.Actor.ActorID })">Edit</a>
-<a class="btn btn-danger" href="@Url.Action("Delete", new { id = Model.Actor.ActorID })">Delete</a>
+<hr />
+
+<h2>Movie Details</h2>
+
+<p><strong>Title:</strong> @Model.movie.Title</p>
+<p><strong>Genre:</strong> @Model.movie.Genre</p>
+<p><strong>Release Year:</strong> @Model.movie.ReleaseYear</p>
+<p><strong>IMDB:</strong> <a href="@Model.movie.IMDBLink" target="_blank">Link</a></p>
+
+@if (Model.movie.Poster != null && Model.movie.Poster.Length > 0)
+{
+    var movieBase64 = Convert.ToBase64String(Model.movie.Poster);
+    var movieImgSrc = $"data:image/jpeg;base64,{movieBase64}";
+    <img src="@movieImgSrc" width="300" />
+}
+
+<hr />
+
+<a class="btn btn-warning" href="@Url.Action("Edit", new { movieID = Model.movie.MovieID, ActorID = Model.actor.ActorID })">Edit</a>
+<a class="btn btn-danger" href="@Url.Action("Delete", new { movieID = Model.movie.MovieID, ActorID = Model.actor.ActorID })">Delete</a>
 <a class="btn btn-secondary" href="@Url.Action("Index")">Back to List</a>
-
-<h3>Tweets</h3>
-<h4>Average Sentiment: @Model.AverageSentiment.ToString("F2")</h4>
-
-<table id="reviewsTable" class="table" data-table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Review</th>
-            <th>Sentiment</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i=0; i < Model.Tweets.Count; i++)
-        {
-            <tr>
-                <td>@(i+1)</td>
-                <td>@Model.Tweets[i]</td>
-                <td>@Model.Sentiments[i].ToString("F2")</td>
-            </tr>
-        }
-    </tbody>
-
-</table>
