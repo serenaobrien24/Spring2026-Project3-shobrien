@@ -1,26 +1,30 @@
 ﻿@model Spring2026_Project3_shobrien.Models.MovieDetailsViewModel
 
+<div class="details-header">
+    <h1>@Model.Movie.Title</h1>
 
-<h1>@Model.Movie.Title</h1>
+    @if (Model.Movie.Poster != null && Model.Movie.Poster.Length > 0)
+    {
+        var base64 = Convert.ToBase64String(Model.Movie.Poster);
+        var imgSrc = $"data:image/jpeg;base64,{base64}";
+        <img src="@imgSrc" width="300" class="details-image"/>
+    }
 
-<p><strong>Genre:</strong> @Model.Movie.Genre</p>
-<p><strong>Release Year:</strong> @Model.Movie.ReleaseYear</p>
-<p><strong>IMDB:</strong> <a href="@Model.Movie.IMDBLink" target="_blank">Link</a></p>
+    <div class="details-info">
+        <p><strong>Genre:</strong> @Model.Movie.Genre</p>
+        <p><strong>Release Year:</strong> @Model.Movie.ReleaseYear</p>
+        <p><strong>IMDB:</strong> <a href="@Model.Movie.IMDBLink" target="_blank">Link</a></p>
+    </div>
 
-@if (Model.Movie.Poster != null && Model.Movie.Poster.Length > 0)
-{
-    var base64 = Convert.ToBase64String(Model.Movie.Poster);
-    var imgSrc = $"data:image/jpeg;base64,{base64}";
-    <img src="@imgSrc" width="300" />
-}
-
-<a class="btn btn-warning" href="@Url.Action("Edit", new { id = Model.Movie.MovieID })">Edit</a>
-<a class="btn btn-danger" href="@Url.Action("Delete", new { id = Model.Movie.MovieID })">Delete</a>
-<a class="btn btn-secondary" href="@Url.Action("Index")">Back to List</a>
+    <div class="buttons-menu">
+        <a class="btn btn-warning" href="@Url.Action("Edit", new { id = Model.Movie.MovieID })">Edit</a>
+        <a class="btn btn-danger" href="@Url.Action("Delete", new { id = Model.Movie.MovieID })">Delete</a>
+        <a class="btn btn-secondary" href="@Url.Action("Index")">Back to List</a>
+    </div>
+</div>
 
 <h3>Reviews</h3>
-<h4>Average Sentiment: @Model.AverageSentiment.ToString("F2")</h4>
-
+<h5>Average Sentiment: @Model.AverageSentiment.ToString("F2")</h5>
 <table id="reviewsTable" class="table" data-table>
     <thead>
         <tr>
@@ -42,7 +46,7 @@
 
 </table>
 
-<h3>Actors in this movie:</h3>
+<h3>Actors Featured in <strong>@Model.Movie.Title</strong></h3>
 <table id="moviesTable" class="table" data-table>
     <thead>
         <tr>
