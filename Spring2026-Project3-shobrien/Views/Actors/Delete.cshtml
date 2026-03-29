@@ -1,19 +1,28 @@
 ﻿@model Spring2026_Project3_shobrien.Models.Actor
 
-@{
-    ViewData["Title"] = "Delete Actor";
-}
-<h1>@ViewData["Title"]</h1>
+<h2>Are you sure you want to delete this actor?</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<div class="details-header">
+    <h1>@Model.Name</h1>
 
-<div>
-    <h4>@Model.Name</h4>
-    <p>@Model.Age</p>
+    @if (Model.Photo != null && Model.Photo.Length > 0)
+    {
+        var base64 = Convert.ToBase64String(Model.Photo);
+        var imgSrc = $"data:image/jpeg;base64,{base64}";
+        <img src="@imgSrc" width="300" class="details-image" />
+    }
+
+    <div class="details-info">
+        <p><strong>Gender:</strong> @Model.Gender</p>
+        <p><strong>Age:</strong> @Model.Age</p>
+        <p><strong>IMDB:</strong> <a href="@Model.IMDBLink" target="_blank">Link</a></p>
+    </div>
 </div>
 
-<form asp-action="Delete">
-    <input type="hidden" asp-for="ActorID" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index">Cancel</a>
-</form>
+<div class="buttons-menu">
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ActorID" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a class="btn btn-secondary" href="@Url.Action("Index")">Cancel</a>
+    </form>
+</div>

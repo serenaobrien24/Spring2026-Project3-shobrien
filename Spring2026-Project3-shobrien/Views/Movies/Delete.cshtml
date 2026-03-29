@@ -1,19 +1,30 @@
 ﻿@model Spring2026_Project3_shobrien.Models.Movie
 
-@{
-    ViewData["Title"] = "Delete Movie";
-}
-<h1>@ViewData["Title"]</h1>
+<h2>Are you sure you want to delete this movie?</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<div class="details-header">
+    <h1>@Model.Title</h1>
 
-<div>
-    <h4>@Model.Title</h4>
-    <p>@Model.Genre</p>
+    @if (Model.Poster != null && Model.Poster.Length > 0)
+    {
+        var base64 = Convert.ToBase64String(Model.Poster);
+        var imgSrc = $"data:image/jpeg;base64,{base64}";
+        <img src="@imgSrc" width="300" class="details-image" />
+    }
+
+    <div class="details-info">
+        <p><strong>Genre:</strong> @Model.Genre</p>
+        <p><strong>Release Year:</strong> @Model.ReleaseYear</p>
+        <p><strong>IMDB:</strong> <a href="@Model.IMDBLink" target="_blank">Link</a></p>
+    </div>
 </div>
 
-<form asp-action="Delete">
-    <input type="hidden" asp-for="MovieID" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index">Cancel</a>
-</form>
+<div class="buttons-menu">
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MovieID" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a class="btn btn-secondary" href="@Url.Action("Index")">Cancel</a>
+    </form>
+</div>
+
+

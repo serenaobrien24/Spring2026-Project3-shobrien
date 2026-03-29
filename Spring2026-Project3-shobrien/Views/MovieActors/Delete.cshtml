@@ -1,20 +1,48 @@
-﻿@model Spring2026_Project3_shobrien.Models.MovieActorViewModel
+﻿@model Spring2026_Project3_shobrien.Models.MovieActorDetailsViewModel
 
-@{
-    ViewData["Title"] = "Delete Relationship";
-}
-<h1>@ViewData["Title"]</h1>
+<h2>Are you sure you want to delete this relationship?</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<div id="relationship-display">
+    <div class="details-header">
+        <h1>@Model.movie.Title</h1>
 
-<div>
-    <p><strong>Movie:</strong> @Model.MovieTitle</p>
-    <p><strong>Actor:</strong> @Model.ActorName</p>
+        @if (Model.movie.Poster != null && Model.movie.Poster.Length > 0)
+        {
+            var base64 = Convert.ToBase64String(Model.movie.Poster);
+            var imgSrc = $"data:image/jpeg;base64,{base64}";
+            <img src="@imgSrc" width="300" class="details-image" />
+        }
+
+        <div class="details-info">
+            <p><strong>Genre:</strong> @Model.movie.Genre</p>
+            <p><strong>Release Year:</strong> @Model.movie.ReleaseYear</p>
+            <p><strong>IMDB:</strong> <a href="@Model.movie.IMDBLink" target="_blank">Link</a></p>
+        </div>
+    </div>
+
+    <div class="details-header">
+        <h1>@Model.actor.Name</h1>
+
+        @if (Model.actor.Photo != null && Model.actor.Photo.Length > 0)
+        {
+            var base64 = Convert.ToBase64String(Model.actor.Photo);
+            var imgSrc = $"data:image/jpeg;base64,{base64}";
+            <img src="@imgSrc" width="300" class="details-image" />
+        }
+
+        <div class="details-info">
+            <p><strong>Gender:</strong> @Model.actor.Gender</p>
+            <p><strong>Age:</strong> @Model.actor.Age</p>
+            <p><strong>IMDB:</strong> <a href="@Model.actor.IMDBLink" target="_blank">Link</a></p>
+        </div>
+    </div>
 </div>
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" name="movieID" value="@Model.MovieID" />
-    <input type="hidden" name="actorID" value="@Model.ActorID" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
-</form>
+<div class="buttons-menu">
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="movieID" value="@Model.movie.MovieID" />
+        <input type="hidden" name="actorID" value="@Model.actor.ActorID" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+    </form>
+</div>

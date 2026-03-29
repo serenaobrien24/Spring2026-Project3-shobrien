@@ -18,12 +18,6 @@
             <p><strong>Release Year:</strong> @Model.movie.ReleaseYear</p>
             <p><strong>IMDB:</strong> <a href="@Model.movie.IMDBLink" target="_blank">Link</a></p>
         </div>
-
-        <div class="buttons-menu">
-            <a class="btn btn-warning" href="@Url.Action("Edit", new { id = Model.movie.MovieID })">Edit</a>
-            <a class="btn btn-danger" href="@Url.Action("Delete", new { id = Model.movie.MovieID })">Delete</a>
-            <a class="btn btn-secondary" href="@Url.Action("Index")">Back to List</a>
-        </div>
     </div>
 
     <div class="details-header">
@@ -40,12 +34,6 @@
             <p><strong>Gender:</strong> @Model.actor.Gender</p>
             <p><strong>Age:</strong> @Model.actor.Age</p>
             <p><strong>IMDB:</strong> <a href="@Model.actor.IMDBLink" target="_blank">Link</a></p>
-        </div>
-
-        <div class="buttons-menu">
-            <a class="btn btn-warning" href="@Url.Action("Edit", new { id = Model.actor.ActorID })">Edit</a>
-            <a class="btn btn-danger" href="@Url.Action("Delete", new { id = Model.actor.ActorID })">Delete</a>
-            <a class="btn btn-secondary" href="@Url.Action("Index")">Back to List</a>
         </div>
     </div>
 </div>

@@ -152,12 +152,10 @@ namespace Spring2026_Project3_shobrien.Controllers
 
             if (link == null) return NotFound();
 
-            var vm = new MovieActorViewModel
+            var vm = new MovieActorDetailsViewModel
             {
-                ActorID = link.ActorID,
-                MovieID = link.MovieID,
-                ActorName = link.Actor.Name,
-                MovieTitle = link.Movie.Title
+                actor = link.Actor,
+                movie = link.Movie
             };
 
             return View(vm);
